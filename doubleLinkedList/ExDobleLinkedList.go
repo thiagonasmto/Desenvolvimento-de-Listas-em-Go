@@ -86,15 +86,51 @@ func (dll *doublyLinkedList) Remove() {
 }
 
 func (dll *doublyLinkedList) RemoveOnIndex(index int) {
-
+	if index < 0 || index > dll.size {
+		return
+	}
+	if index == 0 {
+		dll.head = dll.head.next
+	} else if index > 0 && index < dll.size/2 {
+		link := dll.head
+		for i := 0; i < index-1; i++ {
+			link = link.next
+		}
+		link.next = link.next.next
+		link.next.next.prev = link
+	} else if index >= dll.size/2 && index < dll.size {
+		link := dll.tail
+		for i := dll.size; index-1 < i; i-- {
+			link = link.prev
+		}
+		link.next = link.next.next
+		link.next.next.prev = link
+	}
+	dll.size--
 }
 
 func (dll *doublyLinkedList) Get(index int) {
-
+	if index < 0 && index > dll.size {
+		return
+	}else{
+		link := dll.head
+		for i := 0; i < index; i++ {
+			link = link.next
+		}
+		return link.value
+	}
 }
 
-func (dll *doublyLinkedList) Set(value int, index int) {
-
+func (dll *doublyLinkedList) Set(value int, index int) int {
+	if index < 0 && index > dll.size {
+		return
+	}else{
+		link := dll.head
+		for i := 0; i < index; i++ {
+			link = link.next
+		}
+		link.value = value
+	}
 }
 
 func (dll *doublyLinkedList) Size() int {
